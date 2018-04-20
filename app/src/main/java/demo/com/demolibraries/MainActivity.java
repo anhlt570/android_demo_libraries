@@ -14,6 +14,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findViewById(R.id.btn_open_ui_components).setOnClickListener(this);
+        printInfo();
+    }
+
+    void printInfo(){
+        Utility.hashFromSHA1("D5:00:6F:2E:44:50:95:16:CB:B0:57:45:ED:DF:DA:31:87:0A:29:09");
     }
 
     public void openActivity(Class<?> activity) {
