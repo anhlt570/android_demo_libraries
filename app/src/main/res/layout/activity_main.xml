@@ -11,9 +11,14 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/btn_open_ui_components"
+            android:id="@+id/btn_ui_components"
             style="@style/my_buttons"
             android:text="UI Components" />
+
+        <Button
+            android:id="@+id/btn_data_handler"
+            style="@style/my_buttons"
+            android:text="Data handler" />
 
     </LinearLayout>
 </ScrollView>
