@@ -1,2 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.demo.sensors" />
+    package="com.demo.sensors" >
+    <application>
+        <activity
+            android:theme="@style/Theme.AppCompat"
+            android:name=".SensorMainActivity"/>
+    </application>
+
+</manifest>

@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.demo.sensors.SensorMainActivity;
+
 import demo.com.data_handler.DataActivity;
 import demo.com.ui_components.UIActivity;
 
@@ -15,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         findViewById(R.id.btn_ui_components).setOnClickListener(this);
         findViewById(R.id.btn_data_handler).setOnClickListener(this);
+        findViewById(R.id.btn_sensors).setOnClickListener(this);
         printInfo();
     }
 
@@ -35,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_data_handler:
                 openActivity(DataActivity.class);
+                break;
+            case R.id.btn_sensors:
+                openActivity(SensorMainActivity.class);
                 break;
         }
     }

@@ -20,5 +20,11 @@
             style="@style/my_buttons"
             android:text="Data handler" />
 
+        <Button
+            android:id="@+id/btn_sensors"
+            style="@style/my_buttons"
+            android:text="Sensors" />
+
+
     </LinearLayout>
 </ScrollView>
