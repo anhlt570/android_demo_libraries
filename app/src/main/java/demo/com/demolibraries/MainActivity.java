@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.demo.sensors.SensorMainActivity;
+import com.example.mediaplayer.MediaPlayerActivity;
 
 import demo.com.data_handler.DataActivity;
 import demo.com.ui_components.UIActivity;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_ui_components).setOnClickListener(this);
         findViewById(R.id.btn_data_handler).setOnClickListener(this);
         findViewById(R.id.btn_sensors).setOnClickListener(this);
+        findViewById(R.id.btn_media_player).setOnClickListener(this);
         printInfo();
     }
 
@@ -41,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_sensors:
                 openActivity(SensorMainActivity.class);
+                break;
+            case R.id.btn_media_player:
+                openActivity(MediaPlayerActivity.class);
                 break;
         }
     }

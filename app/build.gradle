@@ -30,6 +30,7 @@ dependencies {
     implementation project(path: ':ui_components')
     implementation project(path: ':data_handler')
     implementation project(path: ':sensors')
+    implementation project(path: ':mediaplayer')
 
     //test
     testImplementation 'junit:junit:4.12'
