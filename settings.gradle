@@ -1,1 +1,1 @@
-include ':app', ':ui_components', ':data_handler', ':sensors'
+include ':app', ':ui_components', ':data_handler', ':sensors', ':mediaplayer'
