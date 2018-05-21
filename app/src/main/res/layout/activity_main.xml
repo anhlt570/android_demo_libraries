@@ -25,6 +25,10 @@
             style="@style/my_buttons"
             android:text="Sensors" />
 
+        <Button
+            android:id="@+id/btn_media_player"
+            style="@style/my_buttons"
+            android:text="Media Player" />
 
     </LinearLayout>
 </ScrollView>
