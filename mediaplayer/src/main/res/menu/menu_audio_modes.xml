@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mode_current"
+        android:title="CURRENT" />
+    <item
+        android:id="@+id/mode_invalid"
+        android:title="INVALID" />
+    <item
+        android:id="@+id/mode_in_call"
+        android:title="IN_CALL" />
+    <item
+        android:id="@+id/mode_in_communication"
+        android:title="IN_COMMUNICATION" />
+    <item
+        android:id="@+id/mode_normal"
+        android:title="NORMAL" />
+    <item
+        android:id="@+id/mode_ringtone"
+        android:title="RINGTONE" />
+</menu>

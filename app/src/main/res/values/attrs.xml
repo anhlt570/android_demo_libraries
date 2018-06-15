@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--shadow view-->
+    <declare-styleable name="ShadowLayout">
+        <attr name="sl_cornerRadius" format="dimension"/>
+        <attr name="sl_shadowRadius" format="dimension"/>
+        <attr name="sl_shadowColor" format="color"/>
+        <attr name="sl_shadowHorizontal" format="dimension"/>
+        <attr name="sl_shadowVertical" format="dimension"/>
+        <attr name="sl_shadowTop" format="dimension"/>
+        <attr name="sl_shadowBottom" format="dimension"/>
+        <attr name="sl_shadowLeft" format="dimension"/>
+        <attr name="sl_shadowRight" format="dimension"/>
+    </declare-styleable>
+</resources>

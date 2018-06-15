@@ -23,8 +23,6 @@ public class MediaPlayerActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_player);
-        btnPlay = findViewById(R.id.btn_play);
-        btnStop = findViewById(R.id.btn_stop);
 
         btnPlay.setOnClickListener(this);
         btnStop.setOnClickListener(this);
@@ -68,18 +66,6 @@ public class MediaPlayerActivity extends AppCompatActivity implements View.OnCli
     //View.OnClickListener_
     @Override
     public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.btn_play) {
-            if (mMusicPlayer.isPlaying()) {
-                btnPlay.setBackgroundResource(R.drawable.pause);
-                pause();
-            } else {
-                btnPlay.setBackgroundResource(R.drawable.play);
-                play();
-            }
-        } else if (id == R.id.btn_stop) {
-            stop();
-        }
     }
     //_View.OnClickListener
 }

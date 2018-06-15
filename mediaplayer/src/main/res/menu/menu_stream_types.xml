@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/stream_voice_call"
+        android:title="STREAM_VOICE_CALL" />
+    <item
+        android:id="@+id/stream_system"
+        android:title="STREAM_SYSTEM" />
+    <item
+        android:id="@+id/stream_ring"
+        android:title="STREAM_RING" />
+    <item
+        android:id="@+id/stream_music"
+        android:title="STREAM_MUSIC" />
+    <item
+        android:id="@+id/stream_alarm"
+        android:title="STREAM_ALARM" />
+    <item
+        android:id="@+id/stream_notification"
+        android:title="STREAM_NOTIFICATION" />
+    <item
+        android:id="@+id/stream_bluetooth_sco"
+        android:title="STREAM_BLUETOOTH_SCO" />
+    <item
+        android:id="@+id/stream_system_enforced"
+        android:title="STREAM_SYSTEM_ENFORCED" />
+    <item
+        android:id="@+id/stream_dtmf"
+        android:title="STREAM_DTMF" />
+    <item
+        android:id="@+id/stream_tts"
+        android:title="STREAM_TTS" />
+    <item
+        android:id="@+id/stream_accessibility"
+        android:title="STREAM_ACCESSIBILITY" />
+</menu>
