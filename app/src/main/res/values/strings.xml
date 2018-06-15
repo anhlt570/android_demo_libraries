@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Demo Libraries</string>
+
+    <plurals name="abc">
+        <item quantity="zero">a</item>
+        <item quantity="one">a</item>
+        <item quantity="many">n</item>
+        <item quantity="other">n</item>
+    </plurals>
 </resources>

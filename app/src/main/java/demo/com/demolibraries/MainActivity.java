@@ -3,9 +3,11 @@ package demo.com.demolibraries;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.demo.sensors.SensorMainActivity;
+import com.example.facebook.FacebookLoginActivity;
 import com.example.mediaplayer.MediaPlayerActivity;
 
 import demo.com.data_handler.DataActivity;
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_data_handler).setOnClickListener(this);
         findViewById(R.id.btn_sensors).setOnClickListener(this);
         findViewById(R.id.btn_media_player).setOnClickListener(this);
+        findViewById(R.id.btn_facebook).setOnClickListener(this);
         printInfo();
     }
 
@@ -46,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_media_player:
                 openActivity(MediaPlayerActivity.class);
+                break;
+                case R.id.btn_facebook:
+                openActivity(FacebookLoginActivity.class);
                 break;
         }
     }
