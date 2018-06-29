@@ -36,6 +36,17 @@
             style="@style/my_buttons"
             android:text="Facebook" />
 
+        <Button
+            android:id="@+id/btn_translate_activity"
+            style="@style/my_buttons"
+            android:text="Google Translate" />
+
+        <Button
+            android:id="@+id/btn_custom_view"
+            style="@style/my_buttons"
+            android:text="Custom View" />
+
+
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:id="@+id/card_view"
