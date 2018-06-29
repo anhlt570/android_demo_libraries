@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GoogleTranslate</string>
+    <string name="translate_hint">Type text here</string>
+    <string name="btn_translate">Translate</string>
+</resources>

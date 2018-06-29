@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/INDEX.LIST'
+    }
 }
 ext {
     espresso_version = '3.0.1'
@@ -32,4 +36,6 @@ dependencies {
     implementation project(path: ':sensors')
     implementation project(path: ':mediaplayer')
     implementation project(path: ':facebook_login')
+    implementation project(path: ':google_translate')
+    implementation project(path: ':custom_view')
 }

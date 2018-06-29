@@ -7,7 +7,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.demo.sensors.SensorMainActivity;
+import com.example.custom_view.CustomViewActivity;
 import com.example.facebook.FacebookLoginActivity;
+import com.example.google_translate.TranslateActivity;
 import com.example.mediaplayer.MediaPlayerActivity;
 
 import demo.com.data_handler.DataActivity;
@@ -18,12 +20,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        registerListener();
+        printInfo();
+    }
+
+    public void registerListener() {
         findViewById(R.id.btn_ui_components).setOnClickListener(this);
         findViewById(R.id.btn_data_handler).setOnClickListener(this);
         findViewById(R.id.btn_sensors).setOnClickListener(this);
         findViewById(R.id.btn_media_player).setOnClickListener(this);
         findViewById(R.id.btn_facebook).setOnClickListener(this);
-        printInfo();
+        findViewById(R.id.btn_translate_activity).setOnClickListener(this);
+        findViewById(R.id.btn_custom_view).setOnClickListener(this);
     }
 
     void printInfo() {
@@ -50,8 +58,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_media_player:
                 openActivity(MediaPlayerActivity.class);
                 break;
-                case R.id.btn_facebook:
+            case R.id.btn_facebook:
                 openActivity(FacebookLoginActivity.class);
+                break;
+            case R.id.btn_translate_activity:
+                openActivity(TranslateActivity.class);
+                break;
+            case R.id.btn_custom_view:
+                openActivity(CustomViewActivity.class);
                 break;
         }
     }
