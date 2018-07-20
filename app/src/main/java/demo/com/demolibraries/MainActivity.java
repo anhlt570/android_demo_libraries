@@ -9,7 +9,6 @@ import android.view.View;
 import com.demo.sensors.SensorMainActivity;
 import com.example.custom_view.CustomViewActivity;
 import com.example.facebook.FacebookLoginActivity;
-import com.example.google_translate.TranslateActivity;
 import com.example.mediaplayer.MediaPlayerActivity;
 
 import demo.com.data_handler.DataActivity;
@@ -30,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_sensors).setOnClickListener(this);
         findViewById(R.id.btn_media_player).setOnClickListener(this);
         findViewById(R.id.btn_facebook).setOnClickListener(this);
-        findViewById(R.id.btn_translate_activity).setOnClickListener(this);
         findViewById(R.id.btn_custom_view).setOnClickListener(this);
     }
 
@@ -60,9 +58,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_facebook:
                 openActivity(FacebookLoginActivity.class);
-                break;
-            case R.id.btn_translate_activity:
-                openActivity(TranslateActivity.class);
                 break;
             case R.id.btn_custom_view:
                 openActivity(CustomViewActivity.class);
