@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.demo.sensors.SensorMainActivity;
+import com.example.calltest.CallTestActivity;
 import com.example.custom_view.CustomViewActivity;
 import com.example.facebook.FacebookLoginActivity;
 import com.example.mediaplayer.MediaPlayerActivity;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_media_player).setOnClickListener(this);
         findViewById(R.id.btn_facebook).setOnClickListener(this);
         findViewById(R.id.btn_custom_view).setOnClickListener(this);
+        findViewById(R.id.btn_test_call).setOnClickListener(this);
     }
 
     void printInfo() {
@@ -62,6 +64,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_custom_view:
                 openActivity(CustomViewActivity.class);
                 break;
+            case R.id.btn_test_call:
+                openActivity(CallTestActivity.class);
+                break;
+
         }
     }
     //_View.OnClickListener
