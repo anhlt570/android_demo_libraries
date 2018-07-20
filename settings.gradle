@@ -1,1 +1,1 @@
-include ':app', ':ui_components', ':data_handler', ':sensors', ':mediaplayer', ':facebook_login', ':google_translate', ':custom_view'
+include ':app', ':ui_components', ':data_handler', ':sensors', ':mediaplayer', ':facebook_login', ':custom_view'

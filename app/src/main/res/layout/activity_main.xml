@@ -37,11 +37,6 @@
             android:text="Facebook" />
 
         <Button
-            android:id="@+id/btn_translate_activity"
-            style="@style/my_buttons"
-            android:text="Google Translate" />
-
-        <Button
             android:id="@+id/btn_custom_view"
             style="@style/my_buttons"
             android:text="Custom View" />
