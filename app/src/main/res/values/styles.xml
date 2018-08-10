@@ -1,11 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
-        <item name="colorAccent">@color/primaryColor</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorForeground">@color/colorSecondary</item>
     </style>
 
     <style name="my_buttons">
@@ -16,5 +15,4 @@
         <item name="android:layout_margin">4dp</item>
         <item name="android:layout_gravity">center</item>
     </style>
-
 </resources>
