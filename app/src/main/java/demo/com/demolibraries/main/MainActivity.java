@@ -1,9 +1,9 @@
-package demo.com.demolibraries;
+package demo.com.demolibraries.main;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.demo.sensors.SensorMainActivity;
@@ -13,24 +13,20 @@ import com.example.facebook.FacebookLoginActivity;
 import com.example.mediaplayer.MediaPlayerActivity;
 
 import demo.com.data_handler.DataActivity;
+import demo.com.demolibraries.R;
+import demo.com.demolibraries.Utility;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements OnItemClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        registerListener();
         printInfo();
+        RecyclerView rvListMenus = findViewById(R.id.rv_list_menu);
+        MenuAdapter menuAdapter = new MenuAdapter(Data.entities, this);
+        rvListMenus.setAdapter(menuAdapter);
     }
 
-    public void registerListener() {
-        findViewById(R.id.btn_data_handler).setOnClickListener(this);
-        findViewById(R.id.btn_sensors).setOnClickListener(this);
-        findViewById(R.id.btn_media_player).setOnClickListener(this);
-        findViewById(R.id.btn_facebook).setOnClickListener(this);
-        findViewById(R.id.btn_custom_view).setOnClickListener(this);
-        findViewById(R.id.btn_test_call).setOnClickListener(this);
-    }
 
     void printInfo() {
         Utility.hashFromSHA1("D5:00:6F:2E:44:50:95:16:CB:B0:57:45:ED:DF:DA:31:87:0A:29:09");
@@ -40,30 +36,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(new Intent(this, activity));
     }
 
-    //View.OnClickListener_
+    /*--------------------------OnItemClickListener------------------------*/
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_data_handler:
+    public void onItemClick(MenuEntity menu) {
+        switch (menu.getId()) {
+            case MenuID.DATA_HANDLER:
                 openActivity(DataActivity.class);
                 break;
-            case R.id.btn_sensors:
+            case MenuID.SENSORS:
                 openActivity(SensorMainActivity.class);
                 break;
-            case R.id.btn_media_player:
+            case MenuID.MEDIA_PLAYER:
                 openActivity(MediaPlayerActivity.class);
                 break;
-            case R.id.btn_facebook:
+            case MenuID.FACEBOOK:
                 openActivity(FacebookLoginActivity.class);
                 break;
-            case R.id.btn_custom_view:
+            case MenuID.CUSTOM_VIEW:
                 openActivity(CustomViewActivity.class);
                 break;
-            case R.id.btn_test_call:
+            case MenuID.TEST_CALL:
                 openActivity(CallTestActivity.class);
                 break;
-
         }
     }
-    //_View.OnClickListener
 }

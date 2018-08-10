@@ -25,6 +25,7 @@ android {
 ext {
     espresso_version = '3.0.1'
 }
+android.defaultConfig.vectorDrawables.useSupportLibrary = true
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
