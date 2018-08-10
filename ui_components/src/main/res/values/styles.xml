@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-<style name="App_Theme" parent="Base.Theme.AppCompat">
-    <item name="colorPrimary">@color/primaryColor</item>
-    <item name="colorPrimaryDark">@color/primaryDarkColor</item>
-</style>
-</resources>

@@ -13,7 +13,6 @@ import com.example.facebook.FacebookLoginActivity;
 import com.example.mediaplayer.MediaPlayerActivity;
 
 import demo.com.data_handler.DataActivity;
-import demo.com.ui_components.UIActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     @Override
@@ -25,7 +24,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void registerListener() {
-        findViewById(R.id.btn_ui_components).setOnClickListener(this);
         findViewById(R.id.btn_data_handler).setOnClickListener(this);
         findViewById(R.id.btn_sensors).setOnClickListener(this);
         findViewById(R.id.btn_media_player).setOnClickListener(this);
@@ -46,9 +44,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_ui_components:
-                openActivity(UIActivity.class);
-                break;
             case R.id.btn_data_handler:
                 openActivity(DataActivity.class);
                 break;
