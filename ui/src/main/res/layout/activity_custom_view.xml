@@ -6,7 +6,7 @@
     android:background="#fff"
     android:orientation="vertical">
 
-    <com.example.custom_view.graph_view.GraphView
+    <com.example.ui.graph_view.GraphView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:scale="50"/>

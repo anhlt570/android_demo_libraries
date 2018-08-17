@@ -4,13 +4,12 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.demo.sensors.SensorMainActivity;
 import com.example.calltest.CallTestActivity;
-import com.example.custom_view.CustomViewActivity;
 import com.example.facebook.FacebookLoginActivity;
 import com.example.mediaplayer.MediaPlayerActivity;
+import com.example.ui.UIDemoActivity;
 
 import demo.com.data_handler.DataActivity;
 import demo.com.demolibraries.R;
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 openActivity(FacebookLoginActivity.class);
                 break;
             case MenuID.CUSTOM_VIEW:
-                openActivity(CustomViewActivity.class);
+                openActivity(UIDemoActivity.class);
                 break;
             case MenuID.TEST_CALL:
                 openActivity(CallTestActivity.class);

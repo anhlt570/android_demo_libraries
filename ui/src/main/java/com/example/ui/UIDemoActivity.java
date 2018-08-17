@@ -1,10 +1,10 @@
-package com.example.custom_view;
+package com.example.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-public class CustomViewActivity extends AppCompatActivity {
+public class UIDemoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

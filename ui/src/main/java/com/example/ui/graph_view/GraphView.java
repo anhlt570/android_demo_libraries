@@ -1,4 +1,4 @@
-package com.example.custom_view.graph_view;
+package com.example.ui.graph_view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -6,13 +6,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.Rect;
+import android.os.Build;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.example.custom_view.R;
+import com.example.ui.R;
 
 public class GraphView extends View {
     public static final String TAG = "GraphView";
@@ -21,6 +23,10 @@ public class GraphView extends View {
     public int touchX, touchY;
     public Paint mPaint;
 
+    public GraphView(Context context) {
+        super(context);
+    }
+
     public GraphView(Context context, AttributeSet attributeSet) {
         super(context);
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.GraphView, 0, 0);
@@ -28,6 +34,15 @@ public class GraphView extends View {
         mPaint = new Paint();
         mPaint.setStyle(Paint.Style.STROKE);
         touchX = touchY = -1;
+    }
+
+    public GraphView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public GraphView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     @Override

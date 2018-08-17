@@ -1,10 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.custom_view">
-
+    package="com.example.ui">
     <application>
-        <activity android:name=".CustomViewActivity" />
-
+        <activity android:name=".UIDemoActivity" />
     </application>
-
-
 </manifest>
