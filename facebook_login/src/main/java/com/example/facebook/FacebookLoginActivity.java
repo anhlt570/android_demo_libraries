@@ -1,6 +1,7 @@
 package com.example.facebook;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -16,6 +17,9 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
@@ -25,20 +29,26 @@ import java.util.Arrays;
 
 public class FacebookLoginActivity extends AppCompatActivity implements View.OnClickListener {
     public static final String TAG = "FacebookLoginActivity";
+    private CallbackManager callbackManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_facebook_login);
         findViewById(R.id.btn_login).setOnClickListener(this);
         showLogHashKey(this);
 
-        LoginManager.getInstance().registerCallback(CallbackManager.Factory.create(), new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d(TAG, "Facebook access token: " + AccessToken.getCurrentAccessToken().getToken());
-                Log.d(TAG, "registerCallback: "+loginResult);
-//            getFacebookData();
+                String requestParams = "/me?fields=ids_for_business";
+                new GraphRequest(AccessToken.getCurrentAccessToken(), requestParams, null, HttpMethod.GET, new GraphRequest.Callback() {
+                    @Override
+                    public void onCompleted(GraphResponse response) {
+                        Log.d(TAG, "onCompleted: " + response);
+                    }
+                }).executeAsync();
             }
 
             @Override
@@ -56,6 +66,12 @@ public class FacebookLoginActivity extends AppCompatActivity implements View.OnC
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public static void showLogHashKey(Context context) {
@@ -81,9 +97,11 @@ public class FacebookLoginActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+
+    /*----------------------OnClickListener------------------------------*/
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btn_login){
+        if (v.getId() == R.id.btn_login) {
             LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
         }
     }
