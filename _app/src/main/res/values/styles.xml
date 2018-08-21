@@ -5,6 +5,7 @@
         <item name="android:textColorPrimary">@color/colorPrimaryText</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:colorForeground">@color/colorSecondary</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="my_buttons">
