@@ -41,6 +41,11 @@ public class Data {
                 .setTitle("Test Call")
                 .setDescription("")
                 .setIconId(R.drawable.ic_call));
+        add(new MenuEntity()
+                .setId(MenuID.SPEECH_RECOGNITION)
+                .setTitle("Speech Recognition")
+                .setDescription("For detecting whatever user is speaking")
+                .setIconId(R.drawable.ic_recorder));
     }};
 }
 
@@ -50,7 +55,8 @@ public class Data {
         MenuID.MEDIA_PLAYER,
         MenuID.FACEBOOK,
         MenuID.CUSTOM_VIEW,
-        MenuID.TEST_CALL
+        MenuID.TEST_CALL,
+        MenuID.SPEECH_RECOGNITION
 })
 @Retention(RetentionPolicy.SOURCE)
 @interface MenuID {
@@ -60,4 +66,5 @@ public class Data {
     int FACEBOOK = 3;
     int CUSTOM_VIEW = 4;
     int TEST_CALL = 5;
+    int SPEECH_RECOGNITION = 6;
 }

@@ -9,6 +9,7 @@ import com.demo.sensors.SensorMainActivity;
 import com.example.calltest.CallTestActivity;
 import com.example.facebook.FacebookLoginActivity;
 import com.example.mediaplayer.MediaPlayerActivity;
+import com.example.recognizer.SpeechRecognitionActivity;
 import com.example.ui.UIDemoActivity;
 
 import demo.com.data_handler.DataActivity;
@@ -56,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
                 break;
             case MenuID.TEST_CALL:
                 openActivity(CallTestActivity.class);
+                break;
+            case MenuID.SPEECH_RECOGNITION:
+                openActivity(SpeechRecognitionActivity.class);
                 break;
         }
     }
