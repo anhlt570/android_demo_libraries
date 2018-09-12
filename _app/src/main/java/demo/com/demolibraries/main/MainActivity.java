@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.demo.sensors.SensorMainActivity;
 import com.example.calltest.CallTestActivity;
@@ -11,8 +12,12 @@ import com.example.facebook.FacebookLoginActivity;
 import com.example.mediaplayer.MediaPlayerActivity;
 import com.example.recognizer.SpeechRecognitionActivity;
 import com.example.ui.UIDemoActivity;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
 
 import demo.com.data_handler.DataActivity;
+import demo.com.demolibraries.MyJobService;
 import demo.com.demolibraries.R;
 import demo.com.demolibraries.Utility;
 
@@ -20,11 +25,25 @@ public class MainActivity extends AppCompatActivity implements OnItemClickListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        initView();
         printInfo();
+        appendJob();
+    }
+
+    private void initView() {
+        setContentView(R.layout.activity_main);
         RecyclerView rvListMenus = findViewById(R.id.rv_list_menu);
         MenuAdapter menuAdapter = new MenuAdapter(Data.entities, this);
         rvListMenus.setAdapter(menuAdapter);
+    }
+
+    private void appendJob(){
+        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(this));
+        Job job = dispatcher.newJobBuilder()
+                .setService(MyJobService.class)
+                .setTag("some shit tag")
+                .build();
+        Log.d("MainActivity", "appendJob: "+ dispatcher.schedule(job));
     }
 
 
