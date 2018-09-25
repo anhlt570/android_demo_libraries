@@ -1,5 +1,6 @@
 package com.example.bluetooth
 
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.bluetooth.BluetoothAdapter
 import android.content.BroadcastReceiver
@@ -9,6 +10,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.view.animation.AnimationSet
 import kotlinx.android.synthetic.main.activity_bluetooth.*
 
 class BluetoothDemoActivity : AppCompatActivity() {
@@ -16,15 +18,16 @@ class BluetoothDemoActivity : AppCompatActivity() {
         private const val REQUEST_CODE_ENABLE_BLUETOOTH = 1001
     }
 
+    val bluetoothStatusAnimation = AnimatorSet()
+
     private var bluetoothAdapter: BluetoothAdapter? = null
-    private val fadedAnimation = ObjectAnimator.ofFloat(R.id.img_status, "alpha", 0.0f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bluetooth)
+        initStatusAnimation()
         initBluetooth()
         initBluetoothStatusReceiver()
-        initStatusAnimation()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -49,10 +52,18 @@ class BluetoothDemoActivity : AppCompatActivity() {
     }
 
     private fun initStatusAnimation() {
+        val scaleAnimation = ObjectAnimator.ofFloat(img_status, "scale", 40.0f)
+        scaleAnimation.duration = 500
+        scaleAnimation.repeatCount = ObjectAnimator.INFINITE
+        scaleAnimation.repeatMode = ObjectAnimator.REVERSE
+
+        val fadedAnimation = ObjectAnimator.ofFloat(img_status, "alpha", 0.0f)
         fadedAnimation.duration = 500
         fadedAnimation.repeatCount = ObjectAnimator.INFINITE
         fadedAnimation.repeatMode = ObjectAnimator.REVERSE
         fadedAnimation.target = img_status
+
+        bluetoothStatusAnimation.playTogether(scaleAnimation, fadedAnimation)
     }
 
     private fun initBluetoothStatusReceiver() {
@@ -73,11 +84,11 @@ class BluetoothDemoActivity : AppCompatActivity() {
             view_disable.visibility = View.VISIBLE
             img_status.setImageResource(R.drawable.ic_status_dot_disabled)
             img_status.animation?.cancel()
-            fadedAnimation.cancel()
+            bluetoothStatusAnimation.cancel()
         } else {
             view_disable.visibility = View.GONE
             img_status.setImageResource(R.drawable.ic_status_dot)
-            fadedAnimation.start()
+            bluetoothStatusAnimation.start()
         }
         tv_state.text = "Bluetooth State = ${bluetoothAdapter!!.state}"
     }
