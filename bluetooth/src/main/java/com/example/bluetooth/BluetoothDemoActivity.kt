@@ -3,6 +3,7 @@ package com.example.bluetooth
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothProfile
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -28,7 +29,9 @@ class BluetoothDemoActivity : AppCompatActivity() {
         initStatusAnimation()
         initBluetooth()
         initBluetoothStatusReceiver()
+        initBluetoothClient()
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -52,10 +55,17 @@ class BluetoothDemoActivity : AppCompatActivity() {
     }
 
     private fun initStatusAnimation() {
-        val scaleAnimation = ObjectAnimator.ofFloat(img_status, "scale", 40.0f)
-        scaleAnimation.duration = 500
-        scaleAnimation.repeatCount = ObjectAnimator.INFINITE
-        scaleAnimation.repeatMode = ObjectAnimator.REVERSE
+        val scaleAnimationX = ObjectAnimator.ofFloat(img_status, "scaleX", 0.50f)
+        scaleAnimationX.duration = 500
+        scaleAnimationX.repeatCount = ObjectAnimator.INFINITE
+        scaleAnimationX.repeatMode = ObjectAnimator.REVERSE
+
+
+        val scaleAnimationY = ObjectAnimator.ofFloat(img_status, "scaleY", 0.5f)
+        scaleAnimationY.duration = 500
+        scaleAnimationY.repeatCount = ObjectAnimator.INFINITE
+        scaleAnimationY.repeatMode = ObjectAnimator.REVERSE
+
 
         val fadedAnimation = ObjectAnimator.ofFloat(img_status, "alpha", 0.0f)
         fadedAnimation.duration = 500
@@ -63,7 +73,7 @@ class BluetoothDemoActivity : AppCompatActivity() {
         fadedAnimation.repeatMode = ObjectAnimator.REVERSE
         fadedAnimation.target = img_status
 
-        bluetoothStatusAnimation.playTogether(scaleAnimation, fadedAnimation)
+        bluetoothStatusAnimation.playTogether(scaleAnimationX, scaleAnimationY, fadedAnimation)
     }
 
     private fun initBluetoothStatusReceiver() {
@@ -91,5 +101,19 @@ class BluetoothDemoActivity : AppCompatActivity() {
             bluetoothStatusAnimation.start()
         }
         tv_state.text = "Bluetooth State = ${bluetoothAdapter!!.state}"
+    }
+
+    private fun initBluetoothClient() {
+        val profileListener = object : BluetoothProfile.ServiceListener {
+            override fun onServiceDisconnected(profile: Int) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onServiceConnected(profile: Int, proxy: BluetoothProfile?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        }
+
+        bluetoothAdapter!!.getProfileProxy(this,profileListener,BluetoothProfile.HEADSET)
     }
 }
