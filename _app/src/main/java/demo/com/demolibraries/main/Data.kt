@@ -1,7 +1,7 @@
 package demo.com.demolibraries.main
 
 import com.demo.sensors.SensorMainActivity
-import com.example.bluetooth.BluetoothDemoActivity
+import com.example.bluetooth.BluetoothActivity
 import com.example.calltest.CallTestActivity
 import com.example.facebook.FacebookLoginActivity
 import com.example.mediaplayer.MediaPlayerActivity
@@ -62,6 +62,6 @@ val MENU: List<MenuItem> = object : ArrayList<MenuItem>() {
                 .setTitle("Bluetooth")
                 .setDescription("Bluetooth devices and audio management")
                 .setIconId(R.drawable.ic_bluetooth)
-                .setActivityToOpen(BluetoothDemoActivity::class.java))
+                .setActivityToOpen(BluetoothActivity::class.java))
     }
 }

@@ -2,6 +2,7 @@ package com.example.bluetooth
 
 import android.animation.AnimatorSet
 import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothProfile
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -9,30 +10,25 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
+import com.example.bluetooth.paired_devices.PairedDevicesFragment
 import kotlinx.android.synthetic.main.activity_bluetooth.*
 
-class BluetoothDemoActivity : AppCompatActivity() {
+class BluetoothActivity : AppCompatActivity() {
     companion object {
         private const val REQUEST_CODE_ENABLE_BLUETOOTH = 1001
     }
 
     private var bluetoothStatusAnimation: AnimatorSet? = null
-
     private var bluetoothAdapter: BluetoothAdapter? = null
+    private lateinit var broadcastReceiver: BroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bluetooth)
-        if (bluetoothAdapter != null) {
-            v_no_bluetooth.visibility = View.GONE
-            initStatusAnimation()
-            initBluetooth()
-            initBluetoothStatusReceiver()
-            initBluetoothClient()
-        } else {
-            v_no_bluetooth.visibility = View.VISIBLE
-        }
+        bluetoothStatusAnimation = AnimationManager.INSTANCE.getOnlineAnimation(img_status)
+        initBluetooth()
     }
 
 
@@ -42,36 +38,50 @@ class BluetoothDemoActivity : AppCompatActivity() {
             setupBluetoothStatus()
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(broadcastReceiver)
+    }
     /*============================================================================================*/
 
     private fun initBluetooth() {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         setupBluetoothStatus()
-        panel_status.setOnClickListener {
-            if (bluetoothAdapter!!.isEnabled) {
-                bluetoothAdapter!!.disable()
-            } else {
-                val enableIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-                startActivityForResult(enableIntent, REQUEST_CODE_ENABLE_BLUETOOTH)
+        if (bluetoothAdapter == null) {
+            v_no_bluetooth.visibility = View.VISIBLE
+        } else {
+            v_no_bluetooth.visibility = View.GONE
+            panel_status.setOnClickListener {
+                if (bluetoothAdapter!!.isEnabled) {
+                    bluetoothAdapter!!.disable()
+                } else {
+                    val enableIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                    startActivityForResult(enableIntent, REQUEST_CODE_ENABLE_BLUETOOTH)
+                }
+            }
+            initBluetoothStatusReceiver()
+            initBluetoothClient()
+            supportFragmentManager.beginTransaction().replace(R.id.container_connected_device, DeviceInfoFragment()).commit()
+            bluetoothAdapter?.bondedDevices?.let {
+                val listDevices = arrayListOf<BluetoothDevice>()
+                listDevices.addAll(it)
+                supportFragmentManager.beginTransaction().replace(R.id.container_paired_devices, PairedDevicesFragment.newInstance(listDevices)).commit()
             }
         }
     }
 
-    private fun initStatusAnimation() {
-        bluetoothStatusAnimation = AnimationManager.INSTANCE.getOnlineAnimation(img_status)
-    }
-
     private fun initBluetoothStatusReceiver() {
         val intentFilter = IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED)
-
-        registerReceiver(object : BroadcastReceiver() {
+        broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 val action = intent!!.action
                 if (BluetoothAdapter.ACTION_STATE_CHANGED == action) {
                     setupBluetoothStatus()
                 }
             }
-        }, intentFilter)
+        }
+        registerReceiver(broadcastReceiver, intentFilter)
     }
 
     private fun setupBluetoothStatus() {
@@ -91,11 +101,11 @@ class BluetoothDemoActivity : AppCompatActivity() {
     private fun initBluetoothClient() {
         val profileListener = object : BluetoothProfile.ServiceListener {
             override fun onServiceDisconnected(profile: Int) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("anhlee", "onServiceDisconnected: $profile")
             }
 
             override fun onServiceConnected(profile: Int, proxy: BluetoothProfile?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                Log.d("anhlee", "onServiceConnected: $profile")
             }
         }
 

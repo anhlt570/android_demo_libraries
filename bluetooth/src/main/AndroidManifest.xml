@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application>
-        <activity android:name=".BluetoothDemoActivity" />
+        <activity android:name=".BluetoothActivity" />
     </application>
 
 </manifest>

@@ -35,4 +35,5 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$appcompat_version"
     implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.android.support:recyclerview-v7:$appcompat_version"
 }

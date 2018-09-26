@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tab_connected_device">#B2FF59</color>
+    <color name="tab_paired_devices">#2979FF</color>
+    <color name="tab_available_devices">#FFCA28</color>
+</resources>
