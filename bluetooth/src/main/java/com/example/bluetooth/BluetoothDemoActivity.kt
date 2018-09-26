@@ -1,7 +1,6 @@
 package com.example.bluetooth
 
 import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothProfile
 import android.content.BroadcastReceiver
@@ -11,7 +10,6 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.view.animation.AnimationSet
 import kotlinx.android.synthetic.main.activity_bluetooth.*
 
 class BluetoothDemoActivity : AppCompatActivity() {
@@ -19,17 +17,22 @@ class BluetoothDemoActivity : AppCompatActivity() {
         private const val REQUEST_CODE_ENABLE_BLUETOOTH = 1001
     }
 
-    val bluetoothStatusAnimation = AnimatorSet()
+    private var bluetoothStatusAnimation: AnimatorSet? = null
 
     private var bluetoothAdapter: BluetoothAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bluetooth)
-        initStatusAnimation()
-        initBluetooth()
-        initBluetoothStatusReceiver()
-        initBluetoothClient()
+        if (bluetoothAdapter != null) {
+            v_no_bluetooth.visibility = View.GONE
+            initStatusAnimation()
+            initBluetooth()
+            initBluetoothStatusReceiver()
+            initBluetoothClient()
+        } else {
+            v_no_bluetooth.visibility = View.VISIBLE
+        }
     }
 
 
@@ -39,7 +42,7 @@ class BluetoothDemoActivity : AppCompatActivity() {
             setupBluetoothStatus()
         }
     }
-    /*_________________________________________________________________________________________________________________*/
+    /*============================================================================================*/
 
     private fun initBluetooth() {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
@@ -55,25 +58,7 @@ class BluetoothDemoActivity : AppCompatActivity() {
     }
 
     private fun initStatusAnimation() {
-        val scaleAnimationX = ObjectAnimator.ofFloat(img_status, "scaleX", 0.50f)
-        scaleAnimationX.duration = 500
-        scaleAnimationX.repeatCount = ObjectAnimator.INFINITE
-        scaleAnimationX.repeatMode = ObjectAnimator.REVERSE
-
-
-        val scaleAnimationY = ObjectAnimator.ofFloat(img_status, "scaleY", 0.5f)
-        scaleAnimationY.duration = 500
-        scaleAnimationY.repeatCount = ObjectAnimator.INFINITE
-        scaleAnimationY.repeatMode = ObjectAnimator.REVERSE
-
-
-        val fadedAnimation = ObjectAnimator.ofFloat(img_status, "alpha", 0.0f)
-        fadedAnimation.duration = 500
-        fadedAnimation.repeatCount = ObjectAnimator.INFINITE
-        fadedAnimation.repeatMode = ObjectAnimator.REVERSE
-        fadedAnimation.target = img_status
-
-        bluetoothStatusAnimation.playTogether(scaleAnimationX, scaleAnimationY, fadedAnimation)
+        bluetoothStatusAnimation = AnimationManager.INSTANCE.getOnlineAnimation(img_status)
     }
 
     private fun initBluetoothStatusReceiver() {
@@ -94,11 +79,11 @@ class BluetoothDemoActivity : AppCompatActivity() {
             view_disable.visibility = View.VISIBLE
             img_status.setImageResource(R.drawable.ic_status_dot_disabled)
             img_status.animation?.cancel()
-            bluetoothStatusAnimation.cancel()
+            bluetoothStatusAnimation?.cancel()
         } else {
             view_disable.visibility = View.GONE
             img_status.setImageResource(R.drawable.ic_status_dot)
-            bluetoothStatusAnimation.start()
+            bluetoothStatusAnimation?.start()
         }
         tv_state.text = "Bluetooth State = ${bluetoothAdapter!!.state}"
     }
@@ -114,6 +99,6 @@ class BluetoothDemoActivity : AppCompatActivity() {
             }
         }
 
-        bluetoothAdapter!!.getProfileProxy(this,profileListener,BluetoothProfile.HEADSET)
+        bluetoothAdapter!!.getProfileProxy(this, profileListener, BluetoothProfile.HEADSET)
     }
 }

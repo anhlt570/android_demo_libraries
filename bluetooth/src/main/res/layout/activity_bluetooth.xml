@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:background="#212121">
 
-
     <LinearLayout
         android:id="@+id/panel_status"
         android:layout_width="match_parent"
@@ -30,10 +29,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
             android:src="@drawable/ic_status_dot" />
+
     </LinearLayout>
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="0dp"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -44,18 +44,51 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/panel_status">
 
-        <View
-            android:id="@+id/view_disable"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#8c000000"
-            android:clickable="true"
-            android:focusable="true"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <fragment
+                    android:id="@+id/fragment"
+                    android:name="com.example.bluetooth.ConnectedDeviceInfoFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_disable"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#8c000000"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone" />
+        </FrameLayout>
+
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/v_no_bluetooth"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="Bluetooth is not available"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
