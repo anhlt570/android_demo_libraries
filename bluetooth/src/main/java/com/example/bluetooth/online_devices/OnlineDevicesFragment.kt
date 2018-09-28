@@ -1,0 +1,36 @@
+package com.example.bluetooth.online_devices
+
+import android.bluetooth.BluetoothDevice
+import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.example.bluetooth.R
+import kotlinx.android.synthetic.main.fragment_paired_devices.*
+
+class OnlineDevicesFragment : Fragment() {
+    companion object {
+        val ARG_DEVICES = "com.example.bluetooth.paired_devices.OnlineDevicesFragment.devices"
+        fun newInstance(pairedDevices: ArrayList<BluetoothDevice>): OnlineDevicesFragment {
+            val fragment = OnlineDevicesFragment()
+            val args = Bundle()
+            args.putParcelableArrayList(ARG_DEVICES, pairedDevices)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_paired_devices, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        rv_devices.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        arguments?.let {
+            rv_devices.adapter = OnlineDevicesAdapter(it.getParcelableArrayList<BluetoothDevice>(ARG_DEVICES))
+        }
+    }
+}

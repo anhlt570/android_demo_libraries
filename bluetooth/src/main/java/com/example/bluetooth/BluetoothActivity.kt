@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import com.example.bluetooth.paired_devices.PairedDevicesFragment
+import com.example.ui.AnimationManager
 import kotlinx.android.synthetic.main.activity_bluetooth.*
 
 class BluetoothActivity : AppCompatActivity() {
