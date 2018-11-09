@@ -3,6 +3,7 @@ package demo.com.demolibraries.main
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import demo.com.demolibraries.R
 import demo.com.demolibraries.Utility
@@ -17,6 +18,8 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
     private fun initView() {
         setContentView(R.layout.activity_main)
         val rvListMenus = findViewById<RecyclerView>(R.id.rv_list_menu)
+        val gridLayoutManager = GridLayoutManager(this, 3)
+        rvListMenus.layoutManager = gridLayoutManager
         val menuAdapter = MenuAdapter(MENU, this)
         rvListMenus.adapter = menuAdapter
     }

@@ -12,7 +12,6 @@ class MainViewHolder(itemView: View, private val onItemClickListener: OnItemClic
 
     private val imgIcon: ImageView = itemView.findViewById(R.id.img_icon)
     private val tvTitle: TextView = itemView.findViewById(R.id.tv_title)
-    private val tvDescription: TextView = itemView.findViewById(R.id.tv_description)
 
     init {
         itemView.setOnClickListener { onItemClickListener.onItemClick(item!!) }
@@ -24,14 +23,5 @@ class MainViewHolder(itemView: View, private val onItemClickListener: OnItemClic
             imgIcon.setImageResource(item.getIconId())
         }
         tvTitle.text = item.getTitle()
-        tvDescription.text = item.getDescription()
-    }
-
-    fun showDivider(isShow: Boolean) {
-        if (isShow) {
-            itemView.findViewById<View>(R.id.divider).visibility = View.VISIBLE
-        } else {
-            itemView.findViewById<View>(R.id.divider).visibility = View.INVISIBLE
-        }
     }
 }

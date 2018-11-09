@@ -23,7 +23,6 @@ class MenuAdapter(menuItems: List<MenuItem>?, private val onItemClickListener: O
 
     override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         holder.bindView(data!![position])
-        holder.showDivider(position < itemCount - 1)
     }
 
     override fun getItemCount(): Int {

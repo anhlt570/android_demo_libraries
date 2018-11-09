@@ -5,7 +5,6 @@ import android.support.annotation.DrawableRes
 class MenuItem {
     private var id: Int = 0
     private var title: String? = null
-    private var description: String? = null
     private var activityToOpen: Class<*>? = null
     private var iconId: Int = 0
 
@@ -20,15 +19,6 @@ class MenuItem {
 
     fun setTitle(title: String): MenuItem {
         this.title = title
-        return this
-    }
-
-    fun getDescription(): String? {
-        return description
-    }
-
-    fun setDescription(description: String?): MenuItem {
-        this.description = description ?: ""
         return this
     }
 

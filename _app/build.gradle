@@ -45,6 +45,7 @@ dependencies {
     implementation project(path: ':call_test')
     implementation project(path: ':speech_recognition')
     implementation project(path: ':bluetooth')
+    implementation project(path: ':chat')
 
 
     implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
