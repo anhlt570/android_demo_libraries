@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ui">
     <application>
-        <activity android:name=".UIDemoActivity" />
+        <activity android:name=".UIDemoActivity"
+            android:theme="@style/UI_main_theme"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
     </application>
 </manifest>
