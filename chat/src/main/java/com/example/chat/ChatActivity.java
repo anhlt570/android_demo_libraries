@@ -46,7 +46,7 @@ public class ChatActivity extends AppCompatActivity implements OnLogInResult {
     public void requestSendMessage(){
         EditText edtContent = findViewById(R.id.edt_content);
         Intent intent = new Intent(Constant.ACTION_SEND_MESSAGE);
-        intent.putExtra(ChatService.ARG_CHAT_CONTENT,edtContent.getText());
+        intent.putExtra(ChatService.ARG_CHAT_CONTENT,edtContent.getText().toString());
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
 }
 

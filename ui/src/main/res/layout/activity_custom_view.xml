@@ -6,10 +6,13 @@
     android:background="#fff"
     android:orientation="vertical">
 
-    <View
+    <ImageView
+        android:id="@+id/img_apng"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_main_background" />
+        android:layout_height="wrap_content"
+        android:minHeight="50dp"
+        android:background="#0f0"
+        android:adjustViewBounds="true" />
 
     <ImageView
         android:id="@+id/img_animator"
@@ -20,12 +23,6 @@
         android:adjustViewBounds="true"
         android:alpha="1"
         android:src="@drawable/layer_01" />
-
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/img_animator" />
 
     <com.example.ui.graph_view.GraphView
         android:layout_width="match_parent"

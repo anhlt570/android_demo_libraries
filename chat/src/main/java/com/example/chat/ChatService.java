@@ -21,6 +21,7 @@ import io.socket.emitter.Emitter;
 
 
 public class ChatService extends Service {
+    private final String TAG = "ChatService";
     private Socket socket;
     public static final String ARG_CHAT_CONTENT = "chat.content";
 
@@ -37,28 +38,35 @@ public class ChatService extends Service {
         registerBroadcastManager();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+    }
+
     private void initSocket(){
         try {
             socket = IO.socket("http://192.168.12.68:3000");
             socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
-                    Log.d("ChatService", "call-Connect: "+ Arrays.toString(args));
-                    socket.emit("connect");
-                    socket.disconnect();
+                    Log.d(TAG, "call-Connect: "+ Arrays.toString(args));
+                    socket.emit("chat","Hello");
+                    //socket.disconnect();
                 }
             }).on("chat", new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
-                    Log.d("ChatService", "call-chat: "+Arrays.toString(args));
+                    Log.d(TAG, "call-chat: "+Arrays.toString(args));
                 }
             }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
                 @Override
                 public void call(Object... args) {
-                    Log.d("ChatService", "call-Disconnect: "+ Arrays.toString(args));
+                    Log.d(TAG, "call-Disconnect: "+ Arrays.toString(args));
                 }
             });
             socket.connect();
+            Log.d(TAG, "initSocket: Done - "+ socket);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -75,11 +83,12 @@ public class ChatService extends Service {
             }
         };
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver,intentFilter);
+        Log.d(TAG, "registerBroadcastManager: Done");
     }
 
     private void sendMessage(String content){
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("content", content);
-        socket.emit("chat", jsonObject);
+        socket.emit("connection", jsonObject);
     }
 }
