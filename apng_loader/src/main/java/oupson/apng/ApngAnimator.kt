@@ -4,54 +4,46 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.*
 import android.net.Uri
+import android.os.Handler
+import android.util.Log
 import android.widget.ImageView
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.image
 import org.jetbrains.anko.runOnUiThread
 import org.jetbrains.anko.uiThread
-import oupson.apng.utils.Utils.Companion.isApng
 import oupson.apng.exceptions.NotApngException
 import oupson.apng.utils.ApngAnimatorOptions
 import oupson.apng.utils.Utils
+import oupson.apng.utils.Utils.Companion.isApng
 import java.io.File
 import java.net.URL
 
 /**
  * Class to play APNG
  */
-class ApngAnimator(private val context: Context) {
+class ApngAnimator(private val context: Context, targetView: ImageView) {
     var isPlaying = true
-        private set(value) {
-            field = value
-        }
+    var isLoading = false
+    var isLoop = true
+    var isApng = false
+    var isAutoPlay = true
+
     private var frames = ArrayList<Frame>()
     private val generatedFrame = ArrayList<Bitmap>()
-    var speed: Float? = null
-        set(value)  {
-            if (isApng) {
-                field = value
-                try {
-                    pause()
-                    play()
-                } catch (e: Exception) {
-                }
-            }
-        }
-    private var bitmapBuffer: Bitmap? = null
-    private var imageView: ImageView? = null
-    private var anim: CustomAnimationDrawable? = null
-    private var activeAnimation: CustomAnimationDrawable? = null
-    private var doOnLoaded : (ApngAnimator) -> Unit = {}
-    private var AnimationLoopListener : () -> Unit = {}
-    private var duration : ArrayList<Float>? = null
-    private var scaleType : ImageView.ScaleType? = null
 
-    var isApng = false
-    var loadNotApng = true
-    private val sharedPreferences : SharedPreferences = context.getSharedPreferences("apngAnimator", Context.MODE_PRIVATE)
+    private var bitmapBuffer: Bitmap? = null
+    private var imageView: ImageView
+
+    private var activeAnimation: CustomAnimationDrawable? = null
+    private var doOnLoaded: (ApngAnimator) -> Unit = {}
+    //    private var animationLoopListener: () -> Unit = {}
+    var onLoadedListener: OnLoadedListener? = null
+    private var durations: ArrayList<Float>? = null
+    private var loadingUrl: String = ""
+    private var loadNotApng = true
+    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("apngAnimator", Context.MODE_PRIVATE)
 
     init {
-        loadNotApng = sharedPreferences.getBoolean("loadNotApng", true)
+        this.imageView = targetView
     }
 
     /**
@@ -83,18 +75,15 @@ class ApngAnimator(private val context: Context) {
             val bytes = file.readBytes()
             if (isApng(bytes)) {
                 isApng = true
-                this@ApngAnimator.speed = speed
                 // Download PNG
                 APNGDisassembler.disassemble(file.readBytes()).frames.apply {
                     draw(this)
                 }
-                scaleType = apngAnimatorOptions?.scaleType
                 setupAnimationDrawableAndStart()
             } else {
                 if (loadNotApng) {
                     context.runOnUiThread {
-                        imageView?.scaleType = this@ApngAnimator.scaleType ?: ImageView.ScaleType.FIT_CENTER
-                        imageView?.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
+                        imageView.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
                     }
                 } else {
                     throw NotApngException()
@@ -109,23 +98,20 @@ class ApngAnimator(private val context: Context) {
      * @param speed The speed
      * @throws NotApngException
      */
-    fun load(uri : Uri, speed: Float? = null, apngAnimatorOptions: ApngAnimatorOptions? = null) {
+    fun load(uri: Uri) {
         doAsync {
             val bytes = context.contentResolver.openInputStream(uri).readBytes()
             if (isApng(bytes)) {
                 isApng = true
-                this@ApngAnimator.speed = speed
                 // Download PNG
                 APNGDisassembler.disassemble(bytes).frames.apply {
                     draw(this)
                 }
-                scaleType = apngAnimatorOptions?.scaleType
                 setupAnimationDrawableAndStart()
             } else {
                 if (loadNotApng) {
                     context.runOnUiThread {
-                        imageView?.scaleType = this@ApngAnimator.scaleType ?: ImageView.ScaleType.FIT_CENTER
-                        imageView?.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
+                        imageView.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
                     }
                 } else {
                     throw NotApngException()
@@ -140,23 +126,29 @@ class ApngAnimator(private val context: Context) {
      * @param speed The speed
      * @throws NotApngException
      */
-    fun loadUrl(url: URL, speed: Float? = null, apngAnimatorOptions: ApngAnimatorOptions? = null) {
+    fun loadUrl(url: URL) {
         doAsync(exceptionHandler = { e -> e.printStackTrace() }) {
-            this@ApngAnimator.speed = speed
             // Download PNG
+            val start = System.currentTimeMillis()
+            isLoading = true
             Loader.load(context, url).apply {
+                if (url.toString() != this@ApngAnimator.loadingUrl) {
+                    return@apply
+                }
+                isLoading = false
+                Log.d("anhlt11", "loading time: ${(System.currentTimeMillis() - start).toFloat() / 1000f}")
                 if (isApng(this)) {
                     isApng = true
                     APNGDisassembler.disassemble(this).frames.apply {
                         draw(this)
                     }
-                    scaleType = apngAnimatorOptions?.scaleType
                     setupAnimationDrawableAndStart()
                 } else {
                     if (loadNotApng) {
                         context.runOnUiThread {
-                            imageView?.scaleType = this@ApngAnimator.scaleType ?: ImageView.ScaleType.FIT_CENTER
-                            imageView?.setImageBitmap(BitmapFactory.decodeByteArray(this@apply, 0, this@apply.size))
+                            //                            imageView.scaleType = this@ApngAnimator.scaleType ?: ImageView.ScaleType.FIT_CENTER
+
+                            imageView.setImageBitmap(BitmapFactory.decodeByteArray(this@apply, 0, this@apply.size))
                         }
                     } else {
                         throw NotApngException()
@@ -168,28 +160,27 @@ class ApngAnimator(private val context: Context) {
         }
     }
 
-
     /**
      * Load an APNG file and starts playing the animation.
      * @param byteArray ByteArray of the file
      * @param speed The speed
      * @throws NotApngException
      */
-    fun load(byteArray: ByteArray, speed: Float? = null, apngAnimatorOptions: ApngAnimatorOptions?) {
+    fun load(byteArray: ByteArray) {
         doAsync {
-            this@ApngAnimator.speed = speed
             if (isApng(byteArray)) {
                 isApng = true
                 APNGDisassembler.disassemble(byteArray).frames.apply {
                     draw(this)
                 }
-                scaleType = apngAnimatorOptions?.scaleType
                 setupAnimationDrawableAndStart()
             } else {
                 if (loadNotApng) {
                     context.runOnUiThread {
-                        imageView?.scaleType = this@ApngAnimator.scaleType ?: ImageView.ScaleType.FIT_CENTER
-                        imageView?.setImageBitmap(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size))
+                        if (imageView.drawable != null) {
+                            imageView.setImageDrawable(null)
+                        }
+                        imageView.setImageBitmap(BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size))
                     }
                 } else {
                     throw NotApngException()
@@ -204,22 +195,23 @@ class ApngAnimator(private val context: Context) {
      * @param speed The speed
      * @throws NotApngException
      */
-    fun load(string: String, speed : Float? = null, apngAnimatorOptions: ApngAnimatorOptions? = null) {
+    fun load(string: String, speed: Float? = null, apngAnimatorOptions: ApngAnimatorOptions? = null) {
         doAsync {
-            this@ApngAnimator.speed = speed
             if (string.contains("http") || string.contains("https")) {
                 val url = URL(string)
-                loadUrl(url, speed, apngAnimatorOptions)
+                Log.d("anhlt11", "loading: $string")
+                loadingUrl = string
+                loadUrl(url)
             } else if (File(string).exists()) {
                 var pathToLoad = if (string.startsWith("content://")) string else "file://$string"
                 pathToLoad = pathToLoad.replace("%", "%25").replace("#", "%23")
                 val bytes = context.contentResolver.openInputStream(Uri.parse(pathToLoad)).readBytes()
                 if (isApng(bytes)) {
-                    load(bytes, speed, apngAnimatorOptions)
+                    load(bytes)
                 } else {
                     if (loadNotApng) {
                         context.runOnUiThread {
-                            imageView?.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
+                            imageView.setImageBitmap(BitmapFactory.decodeByteArray(bytes, 0, bytes.size))
                         }
                     } else {
                         throw NotApngException()
@@ -234,17 +226,18 @@ class ApngAnimator(private val context: Context) {
      */
     private fun setupAnimationDrawableAndStart() {
         doAsync {
-            anim = toAnimationDrawable()
-            activeAnimation = anim
+            activeAnimation = toAnimationDrawable()
+            activeAnimation?.isOneShot = !isLoop
             uiThread {
-                imageView?.apply {
-                    scaleType = this@ApngAnimator.scaleType ?: ImageView.ScaleType.FIT_CENTER
-                    setImageBitmap(generatedFrame[0])
+                imageView.apply {
                     setImageDrawable(activeAnimation)
                 }
-                activeAnimation?.start()
-                isPlaying = true
                 doOnLoaded(this@ApngAnimator)
+                onLoadedListener?.onLoaded()
+                if (isAutoPlay) {
+                    activeAnimation?.start()
+                    isPlaying = true
+                }
             }
         }
     }
@@ -254,9 +247,11 @@ class ApngAnimator(private val context: Context) {
      */
     private fun draw(extractedFrame: ArrayList<Frame>) {
         // Set last frame
-        duration = ArrayList()
-        frames = extractedFrame
+        durations = ArrayList()
+        frames.clear()
+        frames.addAll(extractedFrame)
         bitmapBuffer = Bitmap.createBitmap(frames[0].maxWidth!!, frames[0].maxHeight!!, Bitmap.Config.ARGB_8888)
+        generatedFrame.clear()
         for (i in 0 until frames.size) {
             // Iterator
             val it = frames[i]
@@ -269,7 +264,11 @@ class ApngAnimator(private val context: Context) {
             // Clear current frame rect
             // If `blend_op` is APNG_BLEND_OP_SOURCE all color components of the frame, including alpha, overwrite the current contents of the frame's output buffer region.
             if (it.blend_op == Utils.Companion.blend_op.APNG_BLEND_OP_SOURCE) {
-                canvas.drawRect(it.x_offsets!!.toFloat(), it.y_offsets!!.toFloat(), it.x_offsets!! + current.width.toFloat(), it.y_offsets!! + current.height.toFloat(), { val paint = Paint(); paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR); paint }())
+                canvas.drawRect(it.x_offsets!!.toFloat(),
+                        it.y_offsets!!.toFloat(),
+                        it.x_offsets!! + current.width.toFloat(),
+                        it.y_offsets!! + current.height.toFloat(),
+                        { val paint = Paint(); paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR); paint }())
             }
             // Draw the bitmap
             canvas.drawBitmap(current, it.x_offsets!!.toFloat(), it.y_offsets!!.toFloat(), null)
@@ -289,7 +288,7 @@ class ApngAnimator(private val context: Context) {
             } else {
                 bitmapBuffer = btm
             }
-            duration?.add(it.delay / (speed ?: 1f))
+            durations?.add(it.delay)
 
         }
     }
@@ -300,32 +299,32 @@ class ApngAnimator(private val context: Context) {
     fun pause() {
         if (isApng) {
             isPlaying = false
-            val animResume = CustomAnimationDrawable()
             activeAnimation?.stop()
-            val currentFrame = activeAnimation!!.current
-            val dura = ArrayList<Float>()
-            frameLoop@ for (i in 0 until anim?.numberOfFrames!!) {
-                val checkFrame = activeAnimation!!.getFrame(i)
-                if (checkFrame === currentFrame) {
-                    val frameIndex = i
-                    for (k in frameIndex until activeAnimation!!.numberOfFrames) {
-                        val frame = activeAnimation!!.getFrame(k)
-                        animResume.addFrame(frame, (duration!![k] / (speed ?: 1f)).toInt())
-                        dura.add(duration!![k])
-                    }
-                    for (k in 0 until frameIndex) {
-                        val frame = activeAnimation!!.getFrame(k)
-                        animResume.addFrame(frame, (duration!![k] / (speed ?: 1f)).toInt())
-                        dura.add(duration!![k])
-                    }
-                    activeAnimation = animResume
-                    imageView?.setImageDrawable(activeAnimation)
-                    activeAnimation?.setOnAnimationLoopListener(AnimationLoopListener)
-                    imageView?.invalidate()
-                    duration = dura
-                    break@frameLoop
-                }
-            }
+//            val animResume = CustomAnimationDrawable()
+//            animResume.isOneShot = isLoop
+//            val currentFrame = activeAnimation!!.current
+//            val dura = ArrayList<Float>()
+//            frameLoop@ for (i in 0 until anim?.numberOfFrames!!) {
+//                val checkFrame = activeAnimation!!.getFrame(i)
+//                if (checkFrame === currentFrame) {
+//                    for (k in i until activeAnimation!!.numberOfFrames) {
+//                        val frame = activeAnimation!!.getFrame(k)
+//                        animResume.addFrame(frame, (durations!![k] / (speed ?: 1f)).toInt())
+//                        dura.add(durations!![k])
+//                    }
+//                    for (k in 0 until i) {
+//                        val frame = activeAnimation!!.getFrame(k)
+//                        animResume.addFrame(frame, (durations!![k] / (speed ?: 1f)).toInt())
+//                        dura.add(durations!![k])
+//                    }
+//                    activeAnimation = animResume
+//                    imageView.setImageDrawable(activeAnimation)
+//                    activeAnimation?.setOnAnimationLoopListener(animationLoopListener)
+//                    imageView.invalidate()
+//                    durations = dura
+//                    break@frameLoop
+//                }
+//            }
         }
     }
 
@@ -339,48 +338,65 @@ class ApngAnimator(private val context: Context) {
         }
     }
 
+    fun playAndHide() {
+        if (isApng) {
+            isPlaying = true
+            activeAnimation?.start()
+            Handler().postDelayed({
+                stop()
+            }, activeAnimation?.getTotalDuration()!!.toLong() + 500)
+        }
+    }
+
+    fun stop() {
+        if (isApng) {
+            isPlaying = false
+            activeAnimation?.stop()
+            imageView.setImageDrawable(null)
+        }
+    }
+
     /**
      * Set animation loop listener
      * @param animationLoopListener The animation loop listener.
      */
-    fun setOnAnimationLoopListener(animationLoopListener : () -> Unit) {
-        if (isApng) {
-            AnimationLoopListener = animationLoopListener
-            anim?.setOnAnimationLoopListener(animationLoopListener)
-        }
-    }
+//    fun setOnAnimationLoopListener(animationLoopListener: () -> Unit) {
+//        if (isApng) {
+//            this.animationLoopListener = animationLoopListener
+//            anim?.setOnAnimationLoopListener(animationLoopListener)
+//        }
+//    }
 
-    /**
-     * Execute on loaded
-     */
-    fun onLoaded(f : (ApngAnimator) -> Unit) {
+//    /**
+//     * Execute on loaded
+//     */
+    fun onLoaded(f: (ApngAnimator) -> Unit) {
         doOnLoaded = f
     }
-
-    fun centerCrop(boolean: Boolean) {
-        if (isApng) {
-            if (boolean) {
-                imageView?.scaleType = ImageView.ScaleType.CENTER_CROP
-                pause()
-                play()
-            } else {
-                imageView?.scaleType = null
-                pause()
-                play()
-            }
-        }
-    }
+//
+//    fun centerCrop(boolean: Boolean) {
+//        if (isApng) {
+//            if (boolean) {
+//                imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+//                pause()
+//                play()
+//            } else {
+//                imageView.scaleType = null
+//                pause()
+//                play()
+//            }
+//        }
+//    }
 
     /**
      * Converts the generated frames into an animation drawable ([CustomAnimationDrawable])
      * in the APNG will be used instead.
      */
-    private fun toAnimationDrawable( ): CustomAnimationDrawable {
+    private fun toAnimationDrawable(): CustomAnimationDrawable {
         if (isApng) {
             return CustomAnimationDrawable().apply {
                 for (i in 0 until generatedFrame.size) {
-                    addFrame(BitmapDrawable(generatedFrame[i]), ((frames[i].delay).toInt() / (speed
-                            ?: 1f)).toInt())
+                    this.addFrame(BitmapDrawable(generatedFrame[i]), ((frames[i].delay)).toInt())
                 }
             }
         } else {

@@ -3,11 +3,12 @@ package com.example.ui
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_custom_view.*
 import oupson.apng.ApngAnimator
-import java.net.URL
 
 class UIDemoActivity : AppCompatActivity() {
+    var i = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_custom_view)
@@ -18,13 +19,17 @@ class UIDemoActivity : AppCompatActivity() {
                 src.start()
             }
         }
-        val url1 = "https://pissingonmypistols.files.wordpress.com/2015/06/lions-eye1.png"
-        val url2 = "http://210.148.155.30:9117/api=load_img&token=eyJhbGciOiJIUzI1NiJ9.eyJ2YSI6MX0.82CPwFJ6IEUbm-ojE_wVV5g6ezhWYKIc0nSJ6klrKsEANGELeNoyTTYwSU5MtDS2MDA2NDRISUqxMDZLNTNWy89LzcksS4XTxmqGekbmAAAAAP__&img_id=5c0500b63803114e2b51255a&img_kind=9"
-        val url3 = "http://210.148.155.30:9117/api=load_img&token=eyJhbGciOiJIUzI1NiJ9.eyJ2YSI6MX0.82CPwFJ6IEUbm-ojE_wVV5g6ezhWYKIc0nSJ6klrKsEANGELeNoyTTYwSU5MtDS2MDA2NDRISUqxMDZLNTNWy89LzcksS4XTxmqGekbmAAAAAP__&img_id=5c0500a33803114e2b512559&img_kind=9"
-        val animator = ApngAnimator(this).loadInto(img_apng)
-        val abc = ApngAnimator(this).loadUrl(URL(url3), null, null)
-//        val drawable1 = ApngDrawable.decode(url1)
-//        img_apng.setImageDrawable(drawable1)
+        val url3 = "https://css-ig.net/support/messages/apng-img/apng-purple-pony-pingo-apng4-s9-nodither.png"
+        val url1 = "https://blog.photopea.com/gifs/nyanCat.png"
+        val url2 = "https://blogandweb.com/wp-content/uploads/2008/11/png-animado.png"
+
+        val animator = ApngAnimator(this, img_apng)
+        animator.isLoop = true
+        animator.isAutoPlay = false
+        animator.load(url2)
+        animator.onLoaded {
+            animator.playAndHide()
+        }
 
     }
 }

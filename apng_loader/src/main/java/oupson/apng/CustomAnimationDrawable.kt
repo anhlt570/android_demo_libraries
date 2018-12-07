@@ -7,9 +7,9 @@ import android.graphics.drawable.AnimationDrawable
  * for the caller to listen for specific animation related events.
  */
 internal class CustomAnimationDrawable : AnimationDrawable() {
-    private var onAnimationLoop : () -> Unit = {}
+    private var onAnimationLoop: () -> Unit = {}
 
-    fun setOnAnimationLoopListener( f : () -> Unit) {
+    fun setOnAnimationLoopListener(f: () -> Unit) {
         onAnimationLoop = f
     }
 
@@ -21,5 +21,13 @@ internal class CustomAnimationDrawable : AnimationDrawable() {
         }
 
         return drawableChanged
+    }
+
+    fun getTotalDuration(): Int {
+        var total = 0
+        for (i in 0 until numberOfFrames) {
+            total += getDuration(i)
+        }
+        return total
     }
 }
