@@ -1,4 +1,4 @@
-package com.example.calltest;
+package com.example.calltest.red5;
 
 import android.content.Context;
 import android.hardware.Camera;
@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.calltest.R;
 import com.red5pro.streaming.R5Connection;
 import com.red5pro.streaming.R5Stream;
 import com.red5pro.streaming.R5StreamProtocol;

@@ -10,7 +10,7 @@ const val CUSTOM_VIEW = 4
 const val TEST_CALL = 5
 const val SPEECH_RECOGNITION = 6
 const val BLUETOOTH = 7
-const val CHAT = 7
+const val CHAT = 8
 
 @IntDef(DATA_HANDLER, SENSORS, MEDIA_PLAYER, FACEBOOK, CUSTOM_VIEW, TEST_CALL, SPEECH_RECOGNITION, BLUETOOTH, CHAT)
 @Retention(AnnotationRetention.SOURCE)
