@@ -1,4 +1,4 @@
-package com.example.mediaplayer
+package com.example.mediaplayer.audio
 
 import android.media.MediaPlayer
 import android.net.Uri
@@ -8,6 +8,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.mediaplayer.Constants
+import com.example.mediaplayer.R
 import kotlinx.android.synthetic.main.fragment_audio_player.*
 
 class AudioPlayerFragment : Fragment() {
