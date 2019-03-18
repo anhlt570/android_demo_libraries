@@ -2,6 +2,7 @@ package com.example.ui
 
 import android.graphics.drawable.Animatable
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_custom_view.*
@@ -30,6 +31,14 @@ class UIDemoActivity : AppCompatActivity() {
         animator.onLoaded {
             animator.playAndHide()
         }
+
+        val handler = Handler()
+        handler.post(object : Runnable{
+            override fun run() {
+                bug_view.invalidate()
+                handler.postDelayed(this, 30)
+            }
+        })
 
     }
 }

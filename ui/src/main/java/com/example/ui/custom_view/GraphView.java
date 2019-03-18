@@ -1,4 +1,4 @@
-package com.example.ui.graph_view;
+package com.example.ui.custom_view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
